@@ -5,6 +5,7 @@ import PaletteButton from '../components/PaletteButton';
 import {Styles} from '../components/Styles';
 import ModalPalette from '../components/ModalPalette';
 
+
 class ColorScreen extends React.Component {
 
   constructor() {
@@ -15,14 +16,17 @@ class ColorScreen extends React.Component {
   state = {
     modalVisible: false,
     paletteInfo : {color: "#000"},
+    image: ''
   };
 
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   }
 
+
+
   render() {
-    const { paletteInfo, modalVisible } = this.state;
+    const { paletteInfo, modalVisible, image } = this.state;
     return (
       <View style={Styles.container}>
         <RNCamera
@@ -49,7 +53,7 @@ class ColorScreen extends React.Component {
           }}
         />
         <PaletteButton action={this.takePicture.bind(this)} />
-        <ModalPalette paletteInfo={paletteInfo} setModalVisible={this.setModalVisible} modalVisible={modalVisible}/>
+        <ModalPalette paletteInfo={paletteInfo} image={image} setModalVisible={this.setModalVisible} modalVisible={modalVisible}/>
       </View>
     );
   }
@@ -58,7 +62,7 @@ class ColorScreen extends React.Component {
     if (this.camera) {
       const options = {quality: 0.5, base64: true};
       const data = await this.camera.takePictureAsync(options);
-      console.log(data.uri);
+      this.setState({ image :  data.uri });
     }
     this.setState({ paletteInfo: { color: "#000" , color2: "#111"} });
     this.setModalVisible(true);

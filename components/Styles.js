@@ -85,4 +85,9 @@ export const Styles = StyleSheet.create({
     padding: 10,
     elevation: 2
   },
+  swatcheStyle: {
+    marginTop: 20,
+    display: "flex",
+    justifyContent: "center",
+  }
 });
