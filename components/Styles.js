@@ -89,5 +89,9 @@ export const Styles = StyleSheet.create({
     marginTop: 20,
     display: "flex",
     justifyContent: "center",
+  },
+  color: {
+    width: 50,
+    height: 50,
   }
 });

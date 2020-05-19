@@ -4,7 +4,8 @@ import {RNCamera} from 'react-native-camera';
 import PaletteButton from '../components/PaletteButton';
 import {Styles} from '../components/Styles';
 import ModalPalette from '../components/ModalPalette';
-
+import { getAllSwatches } from 'react-native-palette';
+import {rgbaToHex, hexToName } from '../components/RgbaToHex';
 
 class ColorScreen extends React.Component {
 
@@ -16,14 +17,12 @@ class ColorScreen extends React.Component {
   state = {
     modalVisible: false,
     paletteInfo : {color: "#000"},
-    image: ''
+    image: '',
   };
 
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   }
-
-
 
   render() {
     const { paletteInfo, modalVisible, image } = this.state;
@@ -58,13 +57,33 @@ class ColorScreen extends React.Component {
     );
   }
 
+  getColors = (path) => {
+    getAllSwatches({}, path, (error, swatches) => {
+      if(error) console.warn("error: ", error);
+      else{
+        swatches.sort((a, b) => {
+          return b.population - a.population;
+        });
+        let dominant = 0;
+        swatches.forEach(swatch => {
+          if(dominant < swatch.population){
+            dominant = swatch.population;
+            console.log(hexToName(rgbaToHex(swatch.color)));
+            this.setState({ paletteInfo: { dominant: rgbaToHex(swatch.color) } });
+          }
+        });
+      }
+    });
+  }
+
   takePicture = async () => {
     if (this.camera) {
       const options = {quality: 0.5, base64: true};
       const data = await this.camera.takePictureAsync(options);
-      this.setState({ image :  data.uri });
+      let uri = data.uri;
+      this.setState({ image :  uri.replace("file:///", "") });
     }
-    this.setState({ paletteInfo: { color: "#000" , color2: "#111"} });
+    this.getColors(this.state.image);
     this.setModalVisible(true);
   };
 }
