@@ -81,6 +81,7 @@ target 'realza_v2' do
 
   pod 'RNExtractColor', :path => '../node_modules/react-native-extract-color'
 
+
   target 'realza_v2Tests' do
     inherit! :complete
     # Pods for testing
