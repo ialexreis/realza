@@ -35,7 +35,7 @@ class ModalPalette extends Component {
                             onPress={() => {
                                 this.props.setModalVisible(false);
                             }}>
-                            <Text style={Styles.textStyle}>Hide Modal</Text>
+                            <Text style={Styles.textStyle}>Close</Text>
                         </TouchableHighlight>
                     </View>
                 </View>
