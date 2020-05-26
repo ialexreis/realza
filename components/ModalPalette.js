@@ -18,25 +18,26 @@ class ModalPalette extends Component {
         console.log(this.props.paletteInfo);
         return (
             <Modal
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={this.props.modalVisible}
+                presentationStyle=""
                 onRequestClose={() => {
                     Alert.alert('Modal has been closed.');
                 }}>
                 <View style={Styles.centeredView}>
                     <View style={Styles.modalView}>
                         <View style={{...Styles.color, backgroundColor: `#${this.props.paletteInfo.dominant}`}}>
-
                         </View>
-
                         <TouchableHighlight
-                            style={{...Styles.openButton, backgroundColor: '#2196F3'}}
+                            style={{...Styles.openButton, backgroundColor: '#FF0000'}}
                             onPress={() => {
                                 this.props.setModalVisible(false);
                             }}>
-                            <Text style={Styles.textStyle}>Close</Text>
+                            <Text style={Styles.textStyle}>x</Text>
                         </TouchableHighlight>
+
+                        <Text style={Styles.colorName}>{this.props.paletteInfo.closestName}</Text>
                     </View>
                 </View>
             </Modal>

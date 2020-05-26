@@ -50,6 +50,8 @@ export const Styles = StyleSheet.create({
     flexDirection: 'row',
   },
   modalView: {
+    width: 300,
+    height: 300,
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
@@ -80,10 +82,14 @@ export const Styles = StyleSheet.create({
     textAlign: "center"
   },
   openButton: {
-    backgroundColor: "#F194FF",
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
+    width: 30,
+    height: 30,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: "#FF0000",
+    borderRadius: 50,
+    padding: 5,
   },
   swatcheStyle: {
     marginTop: 20,
@@ -91,7 +97,12 @@ export const Styles = StyleSheet.create({
     justifyContent: "center",
   },
   color: {
-    width: 50,
-    height: 50,
+    width: 150,
+    height: 150,
+  },
+  colorName: {
+    marginTop: 40,
+    fontWeight: "bold",
+    fontSize: 20,
   }
 });

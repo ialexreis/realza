@@ -113,9 +113,11 @@ class ColorScreen extends React.Component {
                         let color = this.verifyColorParent(rgbaToHex(swatch.color));
                         console.log(color);
                         hexToName(color).then(resp => {
-                            console.log(resp); // PASS NAME TO HEX
+                            this.setState({
+                                paletteInfo: { dominant: rgbaToHex(swatch.color), closestName: resp.value }
+                            });
                         });
-                        this.setState({paletteInfo: {dominant: rgbaToHex(swatch.color)}});
+
                     }
                 });
             }
