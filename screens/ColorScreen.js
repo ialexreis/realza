@@ -17,7 +17,7 @@ class ColorScreen extends React.Component {
 
     state = {
         modalVisible: false,
-        paletteInfo: {color: '#000'},
+        paletteInfo: {},
         image: '',
         mainHex: [
             'FF0000',
@@ -125,8 +125,8 @@ class ColorScreen extends React.Component {
     };
 
     saveColors = () => {
-        let path = RNFS.DocumentDirectoryPath + '/palettes.json';
-        RNFS.write(path, JSON.stringify(this.state.paletteInfo), -1, 'utf8')
+        let path = RNFS.DocumentDirectoryPath + '/palette.json';
+        RNFS.write(path, JSON.stringify(this.state.paletteInfo)+"," , -1, 'utf8')
             .then((success) => {
                 console.log('saved');
             }).catch((err) => {
