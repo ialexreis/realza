@@ -6,6 +6,7 @@ import {Styles} from '../components/Styles';
 import ModalPalette from '../components/ModalPalette';
 import {getAllSwatches} from 'react-native-palette';
 import {rgbaToHex, hexToName} from '../components/RgbaToHex';
+import * as RNFS from 'react-native-fs';
 
 class ColorScreen extends React.Component {
 
@@ -71,34 +72,34 @@ class ColorScreen extends React.Component {
         );
     };
 
-  verifyColorParent = (hex) => {
-    let hexVars = this.state.mainHex;
-    let mainHex = '', percentage = 0;
-    hexVars.forEach(color => {
-      let r1 = parseInt(color.substring(0, 2), 16),
-          g1 = parseInt(color.substring(2, 4), 16),
-          b1 = parseInt(color.substring(4, 6), 16),
-          r2 = parseInt(hex.substring(0, 2), 16),
-          g2 = parseInt(hex.substring(2, 4), 16),
-          b2 = parseInt(hex.substring(4, 6), 16);
+    verifyColorParent = (hex) => {
+        let hexVars = this.state.mainHex;
+        let mainHex = '', percentage = 0;
+        hexVars.forEach(color => {
+            let r1 = parseInt(color.substring(0, 2), 16),
+                g1 = parseInt(color.substring(2, 4), 16),
+                b1 = parseInt(color.substring(4, 6), 16),
+                r2 = parseInt(hex.substring(0, 2), 16),
+                g2 = parseInt(hex.substring(2, 4), 16),
+                b2 = parseInt(hex.substring(4, 6), 16);
 
-      let red = 255 - Math.abs(r1 - r2), green = 255 - Math.abs(g1 - g2),
-          blue = 255 - Math.abs(b1 - b2);
+            let red = 255 - Math.abs(r1 - r2), green = 255 - Math.abs(g1 - g2),
+                blue = 255 - Math.abs(b1 - b2);
 
-      red /= 255;
-      green /= 255;
-      blue /= 255;
+            red /= 255;
+            green /= 255;
+            blue /= 255;
 
-      if (percentage < (red + green + blue) / 3) {
-        percentage = (red + green + blue) / 3;
-        mainHex = color;
-      }
-    });
-    return mainHex;
-  };
+            if (percentage < (red + green + blue) / 3) {
+                percentage = (red + green + blue) / 3;
+                mainHex = color;
+            }
+        });
+        return mainHex;
+    };
 
 
-  getColors = (path) => {
+    getColors = (path) => {
         getAllSwatches({}, path, (error, swatches) => {
             if (error) {
                 console.warn('error: ', error);
@@ -114,13 +115,22 @@ class ColorScreen extends React.Component {
                         console.log(color);
                         hexToName(color).then(resp => {
                             this.setState({
-                                paletteInfo: { dominant: rgbaToHex(swatch.color), closestName: resp.value }
+                                paletteInfo: {dominant: rgbaToHex(swatch.color), closestName: resp.value},
                             });
                         });
-
                     }
                 });
             }
+        });
+    };
+
+    saveColors = () => {
+        let path = RNFS.DocumentDirectoryPath + '/palettes.json';
+        RNFS.write(path, JSON.stringify(this.state.paletteInfo), -1, 'utf8')
+            .then((success) => {
+                console.log('saved');
+            }).catch((err) => {
+            console.log(err.message);
         });
     };
 
@@ -133,6 +143,7 @@ class ColorScreen extends React.Component {
         }
         this.getColors(this.state.image);
         this.setModalVisible(true);
+        this.saveColors();
     };
 }
 
