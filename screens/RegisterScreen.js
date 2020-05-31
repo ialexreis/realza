@@ -13,17 +13,15 @@ class RegisterScreen extends React.Component{
     }
 
     componentDidMount = async () => {
-        this.props.navigation.addListener('willFocus', async (payload) => {
-            const value = await this.getRegister();
-            if (!this._unmounted) {
-                let valueParse = "[" + value.substring(0, value.length - 1) + "]";
-                let colors = JSON.parse(valueParse);
-                colors = colors.filter(function(item){
-                    return item.closestName !== "";
-                });
-                this.setState({ colors: colors });
-            }
-        })
+        const value = await this.getRegister();
+        if (!this._unmounted) {
+            let valueParse = "[" + value.substring(0, value.length - 1) + "]";
+            let colors = JSON.parse(valueParse);
+            colors = colors.filter(function(item){
+                return item.closestName !== "";
+            });
+            this.setState({ colors: colors });
+        }
     };
 
     componentWillUnmount() {
