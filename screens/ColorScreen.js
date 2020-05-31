@@ -62,7 +62,7 @@ class ColorScreen extends React.Component {
                         buttonNegative: 'Cancel',
                     }}
                     onGoogleVisionBarcodesDetected={({barcodes}) => {
-                        console.log(barcodes);
+                        //console.log(barcodes);
                     }}
                 />
                 <PaletteButton action={this.takePicture.bind(this)}/>
@@ -112,7 +112,6 @@ class ColorScreen extends React.Component {
                     if (dominant < swatch.population) {
                         dominant = swatch.population;
                         let color = this.verifyColorParent(rgbaToHex(swatch.color));
-                        console.log(color);
                         hexToName(color).then(resp => {
                             this.setState({
                                 paletteInfo: {dominant: rgbaToHex(swatch.color), closestName: resp.value},
@@ -126,9 +125,10 @@ class ColorScreen extends React.Component {
 
     saveColors = () => {
         let path = RNFS.DocumentDirectoryPath + '/palette.json';
+        console.log(path);
         RNFS.write(path, JSON.stringify(this.state.paletteInfo)+"," , -1, 'utf8')
             .then((success) => {
-                console.log('saved');
+                //console.log('saved');
             }).catch((err) => {
             console.log(err.message);
         });

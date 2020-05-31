@@ -1,33 +1,51 @@
 import * as React from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import * as RNFS from 'react-native-fs';
-//import { List, ListItem } from 'react-native-elements'
+import { ListItem } from 'react-native-elements';
 
 class RegisterScreen extends React.Component{
     constructor() {
         super();
-        this.state.register = [ JSON.parse(this.getRegister()) ]
     }
 
     state = {
-        register: []
+        colors: []
     }
 
-    getRegister = () => {
-        let path = RNFS.DocumentDirectoryPath + '/palette.json';
-        RNFS.readFile(path, 'utf8')
-            .then((contents) => {
-                console.log(contents);
-                return contents;
-            }).catch((err) => {
-            console.log(err.message);
-        });
+    componentDidMount = async () => {
+        this.props.navigation.addListener('willFocus', async (payload) => {
+            const value = await this.getRegister();
+            if (!this._unmounted) {
+                let valueParse = "[" + value.substring(0, value.length - 1) + "]";
+                let colors = JSON.parse(valueParse);
+                colors = colors.filter(function(item){
+                    return item.closestName !== "";
+                });
+                this.setState({ colors: colors });
+            }
+        })
     };
+
+    componentWillUnmount() {
+        this._unmounted = true;
+    }
+
+    getRegister = async () => {
+        let path = RNFS.DocumentDirectoryPath + '/palette.json';
+        return await RNFS.readFile(path, 'utf8');
+    };
+
 
     render() {
         return(
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text>Register Screen!</Text>
+            <View>
+                <ScrollView>
+                {
+                    this.state.colors.map((l, i) => (
+                        <ListItem key={i} title={l.closestName} bottomDivider />
+                    ))
+                }
+                </ScrollView>
             </View>
         );
     }

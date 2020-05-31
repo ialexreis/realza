@@ -15,7 +15,6 @@ class ModalPalette extends Component {
     }
 
     render() {
-        console.log(this.props.paletteInfo);
         return (
             <Modal
                 animationType="fade"
